@@ -1,0 +1,123 @@
+@import "sass/2/base";
+@import "sass/2/buttons";
+/* 
+ ? Ciclos y Condicionales
+*/
+
+body {
+  display: block;
+  background-color: red;
+}
+
+// ** @extend
+//  % sirve para hacer layout y con @extend se llama y se colocan los datos
+%button {
+  display: inline-block;
+  margin: 1em 0;
+  padding: 0.5em 1.5em;
+}
+
+.button {
+  @extend %button;
+}
+
+//? solo se recomienda hacer extends de elementos que no son hijos
+// .btn-custom .span etc
+.btn-custom {
+  @extend .btn-custom;
+}
+
+.button:hover {
+  transform: scale(1.2);
+}
+
+// .button.active {
+//   @extend .button:hover;  //? NO DEJA EXTENDER ESTADOS , EN EL VIDEO SI SIRVE
+// }
+
+/* 
+? condicionales 
+*/
+
+$dev: true !default;
+
+$dev: false;
+@if $dev {
+  * {
+    background-color: rgb(130, 130, 15);
+  }
+}
+
+@if 5 < 3 or 3>2 {
+  * {
+    background-color: rgb(131, 172, 151);
+  }
+} @else if 3 > 2 and 4 > 3 {
+  * {
+    background: none;
+  }
+} @else {
+  * {
+    background-color: rgb(87, 126, 223);
+  }
+}
+
+$buttons: true;
+$colores: true;
+
+@import "./sass/2/buttons";
+
+// @import "sass/2/colores";c
+
+/* 
+? iteraciones
+*/
+
+@for $i from 1 through 10 {
+  .column-#{$i} {
+    // width: ${$i}%;
+    width: $i * 1%;
+  }
+}
+
+@for $i from 1 through 10 {
+  @if $i % 2 != 0 {
+    .column-#{$i} {
+      width: $i * 1%;
+    }
+  }
+}
+
+/* 
+? Foreach-recorrer listas.
+*/
+$colors: red yellow blue;
+
+@each $color in $colors {
+  .color-#{$color} {
+    background: $color;
+  }
+}
+
+$mapColors: (
+  primary: black,
+  secondary: white,
+  tertiary: green,
+);
+@each $key, $color in $mapColors {
+  .#{$key} {
+    background: $color;
+  }
+}
+
+$spectro: hsl(0, 100, 50);
+
+@for $j from 1 to 360 {
+  $spectro: append($spectro, hsl($j,100,50), comma);
+}
+
+
+body{
+  background: linear-gradient($spectro);
+  min-height: 100vh;
+}

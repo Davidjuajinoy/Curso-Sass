@@ -1,0 +1,169 @@
+/* 
+! function
+*/
+
+@function mi-function($number) {
+    // logica de la funcion
+    // $value : $number *2;
+    // @return $value;
+    @if type-of($number) == number {
+      @return $number * 2;
+    }
+    @return null;
+  }
+  
+  body {
+    color: mi-function(2rem);
+  }
+  
+  @function convertirEm($px, $base: 16px) {
+    @if type-of($px) == number and unit($px) == "em" {
+      @return $px / $base * 1em;
+    }
+    @return null;
+  }
+  
+  $path: "/img/";
+  
+  @function img($image) {
+    @return url($path + $image);
+  }
+  
+  /* 
+  ! Funciones de strings
+  */
+  //  quote($string)
+  //  unquote($string)
+  //  str-length($string)
+  //  str-index($string,$value)
+  
+  $width: 1px;
+  $style: solid;
+  $color: red;
+  
+  // body{
+  //   border: unquote($width+' '+$style+' '+$color);
+  
+  //   &::before{
+  //     content: quote($style);
+  //   }
+  
+  //   index: str-index($style, 'i');
+  //   index: str-length($style);
+  //   index: str-length($style);
+  //   color: to-upper-case($style);
+  // }
+  
+  /* 
+  ! Funciones de Numero 
+  */
+  // percentage($number);
+  // max(100%,50%,70%); //el numero mayor
+  // min(100%,50%,70%); //el numero menor
+  // floor(54.9); // el numero se redondea a 54
+  // ceil(54.1); // el numero se redondea a 55
+  // round(54.6); // el numero se redondea a 55
+  // round(54.1); // el numero se redondea a 54
+  // random(); // numero aletorio
+  // random($limite); // numero aletorio hasta el parametro dado
+  
+  /* body{
+    width: percentage(1);  //1%
+    width: max(100%,50%,70%);
+  }
+   */
+  
+  //
+  
+  /* 
+  ! Funciones de mapas y listas
+   */
+  //  nth($list,n); n es la posicion
+  //  index($list,valor); obtener indice del valor
+  //  join($list,$list2,$list3,separador: space/ comma); unir listas
+  // append($list,$value,$separador: space | comma); //separador es opcional ,a grega valores a una lista pero al momento de retornar
+  /*  
+  background: append(1px solid, red , space); 
+   background: 1px solid red;
+  
+   maps
+   map-get($map,$key) //obtiene el valor 
+   map-keys($map) //lista de las keys
+   map-values($map) //lista de valores
+   map-has-key($map,$key)  //true o false si existe esa key en el map
+   map-merge($map,$map2) //une maps
+   map-remove($map,$map2)
+  */
+  
+  // $lista: 1px solid red;
+  // $lista2 : 2px dotted green;
+  // body {
+  //   border-color: nth($lista, 3); //red
+  //   color: index($lista, red); //3
+  //   border: join($lista, $lista2 , comma );
+  //   background: append(1px solid, red , space);
+  // }
+  
+  // $colors:(
+  //   primary: yellow,
+  //   secondary:blue,
+  //   tertiary:red,
+  // );
+  
+  // @function color($colorKey){
+  //   @if map-has-key($colors, $colorKey ) {
+  //     @return map-get($colors, $colorKey);
+  //   }
+  //   @return null;
+  // }
+  
+  // body{
+  //   color: color(primary);
+  // }
+  
+  
+  
+  /* 
+  ! Funciones de introspeccion
+   */
+  
+  //  inspect($var) es como un console.log
+  // type-of($var) tipo de dato
+  // unit($var) devule la unidad de numero como string unit(10px)- "px" 
+  // unitless($var) (boolean) true si el numero no tiene unidad
+  // mixin-exists(name) 
+  // function-exists(function)
+  // variable-exists($var )
+  // global-variable-exists($var) //busca siempre en el scope global
+  $colors:(
+    primary: yellow,
+    secondary:blue,
+    tertiary:red,
+  );
+  @mixin button {
+    color: red;
+  }
+  @if mixin-exists(button) {
+    body{
+      background-color: red;
+    }
+  }
+  
+  body{
+    color: inspect($colors);  // color: (primary:yellow,etc) 
+   
+  }
+  
+  
+  @function longShadow($repets,$color)
+  {
+    $shadow : #{1px 1px $color};
+    @for $i from 2 through $repets {
+      $shadow: append($shadow, $i*1px $i*1px $color,comma);
+    }
+    @return $shadow;
+  }
+  
+  .container{
+    box-shadow: longShadow(3, yellow);
+  }

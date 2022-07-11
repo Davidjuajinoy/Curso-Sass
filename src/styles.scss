@@ -1,0 +1,64 @@
+// 
+/* 
+! Debug 
+*/
+// manda un mensaje en la consola de resultado.
+$size: 1em;
+body{
+    @debug type-of($size);
+}
+
+
+// !warn
+
+body{
+    @warn 'este es un mensaje de warning';
+}
+
+// @error
+// detiene la compilacion hasta que se solucione el error;
+@mixin button-new($color) {
+    @if type-of($color) == color {
+        color:$color
+    }@else{ 
+        @error "no es un color #{color}";
+    }
+}
+
+body{
+    @include button-new(red);
+}
+
+
+//!estructurar proyecto}
+
+/* 
+*SMACSS
+base (etiquetas html)
+modulos (componentes reutilizables)
+layout  (geometria y posicion)
+theme  (tipografia,color)
+estado (elementos que cambian, hover etc)
+*/
+
+/* 
+
+*ITCSS
+settings 
+tools
+generics
+
+
+*7 en 1
+base (reset/normalize, tipografia)
+components (_button.scss, _carousel.sccs, etc)
+vendors (librerias: __bootstrap.sccs, _jquery.sccs)
+layout(_grid, _header,_footer)
+pages (_home.sccs,_contat.sccs) etc cosas especificas
+
+themes(_theme.sccs , _admin_sccs)
+
+utils(_variables.sccs,_function,_mixins,_helpers)
+
+
+*/

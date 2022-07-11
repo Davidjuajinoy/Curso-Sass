@@ -1,0 +1,68 @@
+//  color Sustractivo (pinturas,imprenta)  // cyan, magenta, amerillo,black (CMYL)
+// Color aditivo (luz,pantalla) RGB (red,green,blue) 256 max valor
+// Profundidad de color de 24 bits es igual 16M colores que dan los 256
+
+
+// HSL . Hue, saturation,lighten  , se puede controlar la pureza del color
+// hue -> tono de color  (0-360 deg)
+// saturation -> intensidad del color, de gris a color puro  (0-100%)
+// lighten -> la cantidad de luz (0 dark,100 white,color puro en 50) 0-100%
+    // 0/360 red
+    // 60 yellow
+    // 120 green
+    // 180 cyan
+    // 240 blue
+    // 300 magenta 
+
+
+
+// Notacion Hexadecimal
+// #RRGGBB - 0-16 (0123456789ABCDEF)
+ // #AAEE00   
+
+
+ /* funciones de color */
+
+//  RGB
+// red($color) extrae la cantidad de rojo de ese color
+// green($color) extrae la cantidad de verde de ese color
+// blue($color) extrae la cantidad de azul de ese color
+
+// HSL
+// hue($color) extrae la cantidad de tono de color
+// saturation($color) extrae la cantidad de saturacion del color
+// lightness($color) extrae la luz del color
+
+// darken($color,cantidad)
+//  color: darken($color: #000000, $amount: 0);
+// ($color,cantidad)
+// lighten($color: #000000, $amount: 0);
+//  saturate($color: #000000, $amount: 0)
+// desaturate($color: #000000, $amount: 0)
+//  adjust-hue($color: #000000, $degrees: 0)
+// adjust-color($color: #000000, $red: 1, $green: 2, $blue: 3, $hue: 0, $saturation: 0%, $lightness: 0%, $alpha: 1.0)
+
+
+$text-color-light: #fff;
+$text-color-dark: #222;
+
+@function color-text(){
+    @if lightness($base-color > 50) {
+        @return $text-color-dark;
+    }@else {
+        @return $text-color-light;
+    }
+
+}
+
+
+
+
+body{
+    background-color: hsl(100, 100, 100);
+    color: blue(hsl(100, 100, 100));
+    $hue : hue(rgb(14,27,94));
+    $l : lightness(rgb(14,27,94));
+    color: color-text();
+  
+}

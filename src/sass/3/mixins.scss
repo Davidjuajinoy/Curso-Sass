@@ -1,0 +1,184 @@
+/* 
+! Mixins
+se recomienda en un archivo aparte
+*/
+
+@mixin btn {
+    //tambien acepta condiciones
+    // @if expr { }
+    display: flex;
+    margin: 1em;
+  
+    a {
+      text-decoration: none;
+    }
+  }
+  
+  .btn {
+    @include btn;
+  }
+  
+  //? parametros
+  
+  @mixin button($color) {
+    //tambien acepta condiciones
+    // @if expr { }
+    .button {
+      display: flex;
+      margin: 1em;
+      color: $color;
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+  
+  .button {
+    @include button(red);
+  }
+  //parametros por default
+  @mixin menu($selector-item: ".menu-item", $selector-link: ".menu-link") {
+    margin-top: 0;
+    list-style: none;
+    background: blue;
+  
+    #{$selector-item} {
+      display: flex;
+    }
+  
+    #{$selector-link} {
+      text-decoration: none;
+    }
+  }
+  
+  .menu {
+    @include menu(".item", ".link"); //.menu .item - menu .link
+    // @include menu(i,li);
+  }
+  
+  @mixin menuMultiple($colors...) {
+    margin-top: 0;
+    list-style: none;
+    background: nth($colors, 1);
+  
+    @if length($colors) > 1 {
+      @for $i from 2 through length($colors) {
+        &-#{nth($colors,$i)} {
+          color: nth($colors, $i);
+        }
+      }
+    }
+  }
+  
+  .menu-multiple {
+    @include menuMultiple(red, yellow, blue, green);
+  }
+  
+  $buttons-colors: (
+    primary: blue,
+    secondary: yellow,
+    alert: red,
+    danger: rgb(183, 191, 38),
+  );
+  
+  @mixin menuMap($colors...) {
+    display: block;
+    color: map-get($buttons-colors, nth($colors, 1));
+    @if length($colors) > 1 {
+      @for $i from 2 through length($colors) {
+        &-#{nth($colors,$i)} {
+          color: map-get($buttons-colors, nth($colors, $i));
+        }
+      }
+    }
+  }
+  // map-get($map,$key);
+  
+  // .menu-custom {
+  //   @each $key, $value in $buttons-colors {
+  //     @include menuMap($key);
+  //   }
+  // }
+  
+  //   //primary, secondary,etc
+  
+  .menu-custom {
+    @include menuMap(
+      map-keys($buttons-colors)...
+    ); //sin los 3 puntos no sirve porque el mixin esta con ... y quiere decir que recibira mas de un parametro por lo cual al enviarle a la funcion el map-keys solo recibe uno.
+    // @include menuMap(primary,secondary,alert);
+  }
+  
+  @mixin content {
+    color: red;
+    display: block;
+    // .link{
+    //   @content
+    // }
+  
+    @media screen and(min-width:1024) {
+      @content;
+    }
+  }
+  .content {
+    @include content() {
+      color: yellow; // esto va para la palabra content
+      font-size: 10px;
+    }
+  }
+  
+  // en css se ve asi
+  /* 
+  @media screen and (min-width: 1024) {
+    .content {
+      color: #ff0;
+      font-size: 10px;
+    }
+  }
+   */
+  
+  /* 
+  media query  mixin
+  */
+  @mixin mq($breakpoint) {
+    @media screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+  
+  .body {
+    background-color: red;
+    @include mq(400px) {
+      background-color: green;
+    }
+  }
+  
+  $breakpoints: (
+    small: 320px,
+    medium: 640px,
+    large: 1024px,
+    xlarge: 1440px,
+  );
+  
+  @mixin mqMap($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+      @media screen and (min-width: map-get($breakpoints,$breakpoint) ) {
+        @content;
+      }
+    } @else if type-of($breakpoint) == number and unit($breakpoint) == "px" {
+      @media screen and (min-width: $breakpoint) {
+        @content;
+      }
+    }
+  }
+  
+  .body-map {
+    background-color: red;
+    @include mqMap(small) {
+      background-color: green;
+    }
+    @include mqMap(500px) {
+      background-color: yellow;
+    }
+  }
+  
